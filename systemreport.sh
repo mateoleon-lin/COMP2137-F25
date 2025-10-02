@@ -24,7 +24,7 @@ System Information
 OS: $NAME  $VERSION
 Uptime: $(uptime | awk '{print $2,$3}' )
 CPU: $cpu
-RAM: $ram Installed
+RAM: $ram Mb Installed
 Disk(s): MAKE AND MODEL AND SIZE FOR ALL INSTALLED DISKS
 Video: $vendorMake $vendorModel
 Host Address: $ip
