@@ -3,11 +3,11 @@
 #Here I'm storing the hostname in the shortest way to put ir on the variable host
 host=$(hostnamectl | grep "Static hostname:" | awk '{ print $3 }')
 
-#CPU info is troed in cpu 
+#CPU info is stored in cpu
 cpu=$(sudo lshw -short | grep processor |  awk '{print $3,$4,$5,$6,$7,$8,$9}' | head -n 1)
 
 #Storing free RAM in variable ram
-ram=$(free --mega | grep Mem | awk '{print $2}')
+ram=$(lsmem | grep "Total online" | awk '{print $4}')
 
 #Same but ip, default gateway, DNS in their variables
 ip=$(ip route | head -n 1| awk '{print $9}' )
@@ -43,6 +43,9 @@ ufw=$(sudo ufw status | awk '{print $2}')
 #Gathering listening ports
 listeningPorts=$(ss -tuln | grep LISTEN | awk -F: '{print $2}' | awk '{print $1}' | tr '\n' ' ')
 
+#User logged in in usersLoggedIn
+usersLoggedIn=$(users | tr ' ' ',')
+
 . /etc/os-release
 
 cat <<EOF
@@ -53,7 +56,7 @@ System Information
 OS: $NAME $VERSION
 Uptime: $up
 CPU: $cpu
-RAM: $ram Mb Installed
+RAM: $ram Installed
 Disks: $disk
 Video: $vendorMake $vendorModel
 Host Address: $ip
@@ -62,7 +65,7 @@ DNS Server: $dns
 
 System Status
 -----------------
-Users Logged In: $(users)
+Users Logged In: $usersLoggedIn
 Disk Space: $fileSystem
 Process Count: $totalCount
 Load Averages: $loadAverages
