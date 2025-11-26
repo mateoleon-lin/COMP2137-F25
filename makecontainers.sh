@@ -328,7 +328,7 @@ EOF
 "
     incus exec "$container" -- bash -c '[ -d /etc/cloud ] && echo "network: {config: disabled}" > /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg'
     incus exec "$container" chmod 600 /etc/netplan/"$netplanfile"
-    incus exec "$container" netplan apply
+    incus exec "$container" netplan generate
     incus exec "$container" -- sh -c 'sed -i -e "/[[:space:]]'$container'\$/d" /etc/hosts'
     incus exec "$container" -- sh -c "echo '
 $containerlanip $container
